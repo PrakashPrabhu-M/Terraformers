@@ -10,7 +10,7 @@ const postLogin = async (req, res) => {
     const user = await User.login(username, password);
 
     if (user) {
-      const accessToken = jwt.sign({user}, secret, { expiresIn: "1hr" });
+      const accessToken = jwt.sign(user.toJSON(), secret, { expiresIn: "1hr" });
       res.json({ accessToken });
     }
   } catch (error) {
