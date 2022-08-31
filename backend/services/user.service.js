@@ -22,6 +22,11 @@ class Service extends CommonServices {
     });
     await this.save(newUser);
   }
+
+  async getByMail(email) {
+    const user = await userModel.findOne({ email });
+    return user;
+  }
 }
 
 module.exports = Service;
