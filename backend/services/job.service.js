@@ -3,6 +3,50 @@ const jobModel = require("../models/job.model");
 const CommonServices = require("./common.service");
 
 class Service extends CommonServices {
+  sortJobs(jobs) {
+    const sorted = jobs.sort((a, b) => a.order - b.order);
+    return sorted;
+  }
+
+  async updateOrder(src, tar) {
+    if (src < tar) {
+      let sorce = await jobModel.updateOne(
+        { order: src },
+        { $set: { order: -1 } },
+        { new: true }
+      );
+
+      await jobModel.updateMany(
+        { order: { $lte: tar, $gt: src } },
+        { $inc: { order: -1 } }
+      );
+
+      sorce = await jobModel.updateOne(
+        { order: -1 },
+        { $set: { order: tar } },
+        { new: true }
+      );
+    } else if (src > tar) {
+      let sorce = await jobModel.updateOne(
+        { order: src }, 
+        { $set: { order: -1 } },
+        { new: true }
+      );
+
+      await jobModel.updateMany(
+        { order: { $gte: tar, $lt: src } },
+        { $inc: { order: 1 } }
+      );
+
+      sorce = await jobModel.updateOne(
+        { order: -1 },
+        { $set: { order: tar } },
+        { new: true }
+      );
+    }
+    return this.activeJobs();
+  }
+
   async interestedUsers(jobId) {
     const users = await jobModel.find(
       { _id: jobId },
@@ -55,7 +99,8 @@ class Service extends CommonServices {
 
   async activeJobs() {
     const jobs = await jobModel.find({ status: "active" });
-    return jobs;
+    const res = this.sortJobs(jobs);
+    return res;
   }
 
   async archivedJobs() {

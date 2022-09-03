@@ -12,7 +12,7 @@ const addJob = Joi.object().keys({
   deadline: Joi.date().required(),
   phno: Joi.string().length(10).required(),
   email: Joi.string().custom(email).required(),
-  status: Joi.string().required(),
+  status: Joi.string(),
 });
 
 module.exports = { interestedUsersSchema, addJob };

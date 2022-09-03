@@ -7,7 +7,7 @@ class Service extends CommonServices {
     if (!user) throw "Invalid username";
 
     const hashedPassword = user.password;
-    const passwordMatch = this.verifyHash(hashedPassword, password);
+    const passwordMatch = await this.verifyHash(hashedPassword, password);
     if (!passwordMatch) throw "Incorrect password";
 
     return user;

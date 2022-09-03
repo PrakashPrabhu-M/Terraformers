@@ -13,7 +13,8 @@ const jobSchema = mongoose.Schema({
     default: "active",
   },
   interestedUsers: { type: [String] },
-  order: { type: Number, required: true, unique: true },
+  // order: { type: Number, required: true, unique: true },
+  order: { type: Number, required: true },
   addedBy: { type: String, required: true },
 });
 
