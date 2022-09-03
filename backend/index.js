@@ -4,12 +4,13 @@ const express = require("express");
 const app = express();
 
 // configs
-const { PORT, DB_URL } = require("./config");
+// const { PORT, DB_URL } = require("./config");
+const { PORT, MONGODB_URI } = process.env;
 
 // mongo db
 const mongoose = require("mongoose");
 mongoose
-  .connect(DB_URL)
+  .connect(MONGODB_URI)
   .then(() => console.log(`DB connected`))
   .catch(() => console.log(`DB connection failed`));
 
